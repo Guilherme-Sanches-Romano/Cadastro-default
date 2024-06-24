@@ -1,7 +1,9 @@
 import ehUmCPF from "./valida-cpf.js";
 import ehMaiorDeIdade from "./valida-idade.js";
+import ehSenhaForte from "./valida-senha.js";
 const camposDoFormulario = document.querySelectorAll('[required]')
 const formulario = document.querySelector('[data-formulario]');
+const senha = document.getElementById('senha')
 
 formulario.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -43,6 +45,16 @@ const mensagens = {
         typeMismatch: "Por favor, preencha um email válido.",
         tooShort: "Por favor, preencha um email válido."
     },
+    senha:{
+        valueMissing: "O campo de senha não pode estar vazio.",
+        customError: "A senha deve ter mínimo de 8 caracteres com números, letrar, maiúsculas, minúsculas e pelo menos um caracter especial.",      
+        tooShort: "Por favor, preencha uma senha válida."
+    },
+    confirmarSenha:{
+        valueMissing: "O campo de confirmar senha não pode estar vazio.",
+        customError: "O campo confirmar senha deve estar condizente com o campo senha.",
+       
+    },
     rg: {
         valueMissing: "O campo de RG não pode estar vazio.",
         patternMismatch: "Por favor, preencha um RG válido.",
@@ -53,6 +65,22 @@ const mensagens = {
         patternMismatch: "Por favor, preencha um CPF válido.",
         customError: "O CPF digitado não existe.",
         tooShort: "O campo de CPF não tem caractéres suficientes."
+    },
+    cep: {
+        valueMissing: 'O campo de CEP não pode estar vazio.',
+        tooShort: "O campo de CEP não tem caractéres suficientes."
+    },
+    estado:{
+        valueMissing: 'O campo de estado não pode estar vazio.'
+    },
+    cidade:{
+        valueMissing: 'O campo de cidade não pode estar vazio.'
+    },
+    rua:{
+        valueMissing: 'O campo de rua não pode estar vazio.'
+    },
+    enderecoNum:{
+        valueMissing: 'O campo de número do endereço não pode estar vazio.'    
     },
     aniversario: {
         valueMissing: 'O campo de data de nascimento não pode estar vazio.',
@@ -71,6 +99,12 @@ function verificaCampo(campo) {
     }
     if (campo.name == "aniversario" && campo.value != "") {
         ehMaiorDeIdade(campo);
+    }
+    if(campo.name == "senha" && campo.value != ""){
+        ehSenhaForte(campo);
+    }
+    if(campo.name == "confirmarSenha" && campo.value !="" && campo.value != senha.value){
+        campo.setCustomValidity("O campo confirmar senha deve estar condizente com o campo senha.")
     }
     tiposDeErro.forEach(erro => {
         if (campo.validity[erro]) {
